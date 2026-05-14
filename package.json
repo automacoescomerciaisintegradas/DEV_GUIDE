@@ -1,0 +1,15 @@
+{
+  "name": "dev-guide-platform",
+  "private": true,
+  "version": "1.0.0",
+  "description": "DEV_GUIDE repository automation scripts",
+  "type": "module",
+  "scripts": {
+    "deploy:dev": "node ./scripts/deploy-static.mjs dev",
+    "deploy:prod": "node ./scripts/deploy-static.mjs prod",
+    "publish:dev": "node ./scripts/publish-static.mjs dev",
+    "publish:prod": "node ./scripts/publish-static.mjs prod",
+    "publish:all": "node ./scripts/publish-all.mjs"
+  }
+}
+

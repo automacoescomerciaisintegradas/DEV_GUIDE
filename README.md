@@ -2,6 +2,56 @@
 
 Repositorio com guia de infraestrutura VPS e scripts de setup.
 
+## Deploy estatico (HTML/CSS/JS)
+
+### Estrutura
+
+- `static-site/` -> codigo puro para hospedagem
+- `deploy/dev` e `deploy/prod` -> pacote local gerado automaticamente
+
+### Build local por ambiente
+
+- `npm run deploy:dev`
+- `npm run deploy:prod`
+
+Isso gera as pastas:
+
+- `deploy/dev`
+- `deploy/prod`
+
+### Publicacao Git sem Actions (100% funcional)
+
+Deploy direto para branches de publicacao:
+
+- `npm run publish:dev` -> publica `static-site/` na branch `site-dev`
+- `npm run publish:prod` -> publica `static-site/` na branch `site-prod`
+
+Esses comandos usam `git subtree split` + `git push -f`, entao a branch de deploy fica somente com arquivos estaticos na raiz.
+
+### Promocao de branches da plataforma
+
+Para promover features para producao da plataforma (nao estatico), use:
+
+- `npm run publish:all`
+
+Fluxo automatico:
+
+1. Atualiza `gitlens` com `origin/gitlens`.
+2. Faz fast-forward `gitlens -> prod` e push em `origin/prod`.
+3. Faz fast-forward `prod -> main` e push em `origin/main`.
+
+Observacoes:
+
+- Requer worktrees em `./.worktrees/gitlens`, `./.worktrees/prod` e `./.worktrees/main`.
+- Se houver divergencia entre branches, o script interrompe com erro para evitar merge indevido.
+
+### Como usar na hospedagem
+
+1. Configure o ambiente DEV para ler a branch `site-dev`.
+2. Configure o ambiente PROD para ler a branch `site-prod`.
+
+Se a hospedagem nao conecta Git direto, use o conteudo de `deploy/dev` ou `deploy/prod` e envie via painel/FTP.
+
 ## Deploy `prod` (GitHub Actions)
 
 Este repositorio possui o workflow:
