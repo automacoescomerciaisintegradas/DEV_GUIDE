@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RepoCanvas - GitHub Portfolio Snapshot</title>
+    <meta name="description" content="Gere um portfolio visual a partir do seu perfil do GitHub." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body data-theme="bento">
+    <div class="ambient ambient-a"></div>
+    <div class="ambient ambient-b"></div>
+
+    <header class="topbar">
+      <div class="brand">
+        <span class="logo-dot"></span>
+        <span>RepoCanvas</span>
+      </div>
+      <div class="top-actions">
+        <label class="theme-picker">
+          <span>Tema</span>
+          <select id="themeSelect">
+            <option value="bento">Bento</option>
+            <option value="minimal">Minimal</option>
+            <option value="terminal">Terminal</option>
+          </select>
+        </label>
+      </div>
+    </header>
+
+    <main class="page">
+      <section class="search-panel">
+        <h1>Transforme seu GitHub em um portfolio visual</h1>
+        <p>Digite um username ou URL do GitHub e gere uma pagina compartilhavel.</p>
+
+        <form id="searchForm" class="search-form">
+          <input id="usernameInput" type="text" placeholder="ex.: octocat ou github.com/octocat" autocomplete="off" required />
+          <button type="submit">Gerar</button>
+        </form>
+
+        <div class="tool-row">
+          <button id="copyLinkBtn" type="button" class="ghost">Copiar link</button>
+          <button id="exportBtn" type="button" class="ghost">Exportar PNG</button>
+        </div>
+
+        <p id="status" class="status">Pronto para gerar.</p>
+      </section>
+
+      <section id="portfolio" class="portfolio hidden">
+        <article class="card hero" id="heroCard"></article>
+        <article class="card stats" id="statsCard"></article>
+        <article class="card languages" id="languagesCard"></article>
+        <article class="card repos" id="reposCard"></article>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <span>RepoCanvas MVP</span>
+      <span>Sem afiliação com qualquer projeto de terceiros</span>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>
