@@ -1,10 +1,10 @@
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
-import { ensureExists, resolvePath, run } from './utils.mjs';
+import { ensureExists, resolvePath, rootDir, run } from './utils.mjs';
 
 const wtGitlens = resolvePath('.worktrees', 'gitlens');
 const wtProd = resolvePath('.worktrees', 'prod');
-const wtMain = resolvePath('.worktrees', 'main');
+const wtMain = rootDir;
 
 function ensureWorktree(dir) {
   ensureExists(dir, `Missing worktree: ${dir}`);
@@ -63,4 +63,3 @@ ffGitlensToProd();
 ffProdToMain();
 
 console.log('[publish:all] Completed.');
-

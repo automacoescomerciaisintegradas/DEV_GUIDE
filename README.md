@@ -42,7 +42,8 @@ Fluxo automatico:
 
 Observacoes:
 
-- Requer worktrees em `./.worktrees/gitlens`, `./.worktrees/prod` e `./.worktrees/main`.
+- Requer worktrees em `./.worktrees/gitlens` e `./.worktrees/prod`.
+- A branch `main` e promovida a partir da raiz do repositorio.
 - Se houver divergencia entre branches, o script interrompe com erro para evitar merge indevido.
 
 ### Como usar na hospedagem
