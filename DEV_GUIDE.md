@@ -2,16 +2,16 @@
 
 Guia pratico para o seu servidor:
 
-- Host: `185.190.143.17`
-- Usuario admin: `devops`
+- Host: `<VPS_HOST>`
+- Usuario admin: `<ADMIN_USER>`
 - Modelo: `1 VPS`, Docker Compose, Traefik, SSL automatico
 
 ## 1) Primeira conexao e bootstrap
 
 ```bash
 # local
-scp setup-git-server.sh devops@185.190.143.17:~/
-ssh devops@185.190.143.17 "sudo bash ~/setup-git-server.sh"
+scp setup-git-server.sh <ADMIN_USER>@<VPS_HOST>:~/
+ssh <ADMIN_USER>@<VPS_HOST> "sudo bash ~/setup-git-server.sh"
 ```
 
 ## 2) Estrutura canonica da VPS
@@ -22,14 +22,14 @@ ssh devops@185.190.143.17 "sudo bash ~/setup-git-server.sh"
   /infra
     /traefik             # reverse proxy
   /backups
-/home/devops
+/home/<ADMIN_USER>
   /projects -> /projects # symlink
 ```
 
 ```bash
-sudo install -d /projects/apps /projects/infra /projects/backups -m 2775 -o devops -g devops
-sudo setfacl -m d:g:devops:rwx /projects
-ln -sfn /projects /home/devops/projects
+sudo install -d /projects/apps /projects/infra /projects/backups -m 2775 -o <ADMIN_USER> -g <ADMIN_USER>
+sudo setfacl -m d:g:<ADMIN_USER>:rwx /projects
+ln -sfn /projects /home/<ADMIN_USER>/projects
 ```
 
 ## 3) Hardening minimo
@@ -55,7 +55,7 @@ sudo systemctl enable --now fail2ban
 
 ## 4) Usuario `git` para acesso Git via SSH (sem shell interativo)
 
-Comandos corrigidos (o `--devops` que voce mandou esta incorreto para `adduser`):
+Comandos corrigidos (flags customizadas como `--seu-usuario` estao incorretas para `adduser`):
 
 ```bash
 # cria usuario de sistema para git-shell
@@ -96,7 +96,7 @@ sudo -u git git init --bare /home/git/repos/meuapp.git
 No seu local:
 
 ```bash
-git remote add production git@185.190.143.17:/home/git/repos/meuapp.git
+git remote add production git@<VPS_HOST>:/home/git/repos/meuapp.git
 git push production main
 ```
 
@@ -137,7 +137,7 @@ Estrutura recomendada:
 
 Checklist:
 
-1. DNS do dominio e subdominios apontando para `185.190.143.17`
+1. DNS do dominio e subdominios apontando para `<VPS_HOST>`
 2. portas 80/443 abertas
 3. rede docker externa `web`
 
@@ -184,7 +184,7 @@ sudo fail2ban-client status sshd
 
 ## 10) Erros corrigidos do seu rascunho
 
-- `adduser --disabled-password --devops ...` -> `--devops` nao existe.
+- `adduser --disabled-password --<qualquer-usuario> ...` -> essa flag nao existe.
 - para comentario/descricao de usuario no `adduser`, use `--gecos` (usuario normal) ou use `--system` como acima.
 - `git init -- worktree made-in.git` nao monta estrategia de worktree; use `git worktree add ...` dentro de repo ja iniciado.
 
