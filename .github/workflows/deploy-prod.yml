@@ -1,0 +1,50 @@
+name: Deploy Prod
+
+on:
+  push:
+    branches:
+      - prod
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-prod
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Deploy on VPS via SSH
+        uses: appleboy/ssh-action@23bd972bfcf52bf00cbb7f7f62b2bb06c2efa5b4
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USER }}
+          key: ${{ secrets.KEY }}
+          port: ${{ secrets.PORT }}
+          script_stop: true
+          command_timeout: 20m
+          script: |
+            set -Eeuo pipefail
+
+            APP_DIR="/projects/apps/DEV_GUIDE"
+            BRANCH="prod"
+
+            if [ ! -d "$APP_DIR/.git" ]; then
+              echo "Repositorio nao encontrado em $APP_DIR"
+              echo "Clone antes de usar o workflow:"
+              echo "  git clone <repo-url> $APP_DIR"
+              exit 1
+            fi
+
+            cd "$APP_DIR"
+            git fetch origin "$BRANCH"
+            git checkout "$BRANCH"
+            git reset --hard "origin/$BRANCH"
+
+            if [ -f ./setup-git-server.sh ]; then
+              chmod +x ./setup-git-server.sh
+            fi
+
+            echo "OK: deploy concluido em $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+
